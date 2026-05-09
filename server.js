@@ -24,7 +24,7 @@ app.get("/contact", (req, res) => {
 // Contact POST Route
 app.post("/contact", (req, res) => {
 
-    console.log("Received Form Data:", req.body);
+    console.log("Received Data:", req.body);
 
     const { name, email, message } = req.body;
 
@@ -40,11 +40,11 @@ app.post("/contact", (req, res) => {
 });
 
 
-// Server Port
+// Port
 const PORT = process.env.PORT || 5000;
 
 
-// Start Server
+// Server Start
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
