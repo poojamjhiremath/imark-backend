@@ -1,54 +1,50 @@
 const express = require("express");
 const cors = require("cors");
-const nodemailer = require("nodemailer");
-require("dotenv").config();
 
 const app = express();
 
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-app.post("/contact", async (req, res) => {
 
-  const { name, email, phone, message } = req.body;
-
-  try {
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-
-    await transporter.sendMail({
-      from: email,
-      to: process.env.EMAIL_USER,
-      subject: "New Contact Message",
-      html: `
-        <h2>New Inquiry</h2>
-        <p><b>Name:</b> ${name}</p>
-        <p><b>Email:</b> ${email}</p>
-        <p><b>Phone:</b> ${phone}</p>
-        <p><b>Message:</b> ${message}</p>
-      `,
-    });
-
-    res.json({
-      message: "Message Sent Successfully!",
-    });
-
-  } catch (error) {
-
-    res.status(500).json({
-      message: "Email sending failed",
-    });
-
-  }
-
+// Home Route
+app.get("/", (req, res) => {
+    res.send("Backend Server Running Successfully");
 });
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+
+// Contact GET Route
+app.get("/contact", (req, res) => {
+    res.send("Contact Route Working");
+});
+
+
+// Contact POST Route
+app.post("/contact", (req, res) => {
+
+    console.log("Received Form Data:", req.body);
+
+    const { name, email, message } = req.body;
+
+    res.status(200).json({
+        success: true,
+        message: "Form Submitted Successfully",
+        data: {
+            name,
+            email,
+            message
+        }
+    });
+});
+
+
+// Server Port
+const PORT = process.env.PORT || 5000;
+
+
+// Start Server
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
